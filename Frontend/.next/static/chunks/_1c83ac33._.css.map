@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/ebeth/Documents/Dev/App/Frontend/frontend/app/page.module.css"],"sourcesContent":[".home h1{\n  padding: 2rem;\n  background-color: pink;\n  text-align: center;\n  color: cornflowerblue;\n  margin: 0;\n}"],"names":[],"mappings":"AAAA","debugId":null}},
+    {"offset": {"line": 11, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/ebeth/Documents/Dev/App/Frontend/frontend/components/listView/ListView.module.css"],"sourcesContent":[".listView {\r\n    display: flex;\r\n    justify-content: center;\r\n}"],"names":[],"mappings":"AAAA","debugId":null}},
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/ebeth/Documents/Dev/App/Frontend/frontend/components/List/List.module.css"],"sourcesContent":[".listItem {\r\n    padding: 1rem;\r\n    background: lightgreen;\r\n    border-radius: 10px;\r\n    color: green\r\n}\r\n\r\n.listContainer {\r\n    padding: 2rem;\r\n    width: 20%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 1rem;\r\n}\r\n\r\n.boldText {\r\n    font-weight: bold;\r\n}"],"names":[],"mappings":"AAAA;;;;;;;AAOA;;;;;;;;AAQA","debugId":null}}]
+}

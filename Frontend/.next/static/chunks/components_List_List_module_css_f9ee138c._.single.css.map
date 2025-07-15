@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/components/List/List.module.css"],"sourcesContent":[".listItem {\r\n    padding: 1rem;\r\n    background: lightgreen;\r\n    border-radius: 10px;\r\n    color: green\r\n}\r\n\r\n.listContainer {\r\n    padding: 2rem;\r\n    width: 20%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 1rem;\r\n}\r\n\r\n.boldText {\r\n    font-weight: bold;\r\n}"],"names":[],"mappings":"AAAA;;;;;;;AAOA;;;;;;;;AAQA"}}]
+}

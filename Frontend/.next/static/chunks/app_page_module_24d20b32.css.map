@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/ebeth/Documents/Dev/phonetic-colors/Frontend/app/page.module.css"],"sourcesContent":[".home h1{\n  padding: 2rem;\n  background-color: pink;\n  text-align: center;\n  color: cornflowerblue;\n  margin: 0;\n}"],"names":[],"mappings":"AAAA","debugId":null}}]
+}

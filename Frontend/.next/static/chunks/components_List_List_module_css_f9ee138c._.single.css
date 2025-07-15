@@ -1,0 +1,21 @@
+/* [project]/components/List/List.module.css [app-client] (css) */
+.List-module__vr_9tW__listItem {
+  color: green;
+  background: #90ee90;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.List-module__vr_9tW__listContainer {
+  flex-direction: column;
+  gap: 1rem;
+  width: 20%;
+  padding: 2rem;
+  display: flex;
+}
+
+.List-module__vr_9tW__boldText {
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=components_List_List_module_css_f9ee138c._.single.css.map*/
