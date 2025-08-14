@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { fetchListItemInfo } from "../../api/listService";
 import styles from "./ExtendedList.module.css";
+import { fetchListItemInfo } from "@/app/api/listService";
 
 function ExtendedListItem({
   item,
