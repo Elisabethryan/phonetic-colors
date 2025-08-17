@@ -12,7 +12,7 @@ function TextView() {
 
   useEffect(() => {
     fetchText("12345")
-      .then((story) => setText(story.text))
+      .then((story) => setText(story ? story.text : undefined))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
