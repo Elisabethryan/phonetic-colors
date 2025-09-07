@@ -3,7 +3,7 @@ import { LatinLetter } from "./latinLetter";
 export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
-  style: string;
+  style: Style;
 }
 
 export type Style =

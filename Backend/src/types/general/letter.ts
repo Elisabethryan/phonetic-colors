@@ -6,14 +6,13 @@ export interface FormattedLetter {
   style: Style;
 }
 
-export enum Style {
-  ACTIVE = 'unstyled',
-  INACTIVE = 'underlined',
-  PENDING = 'colored',
+export enum StyleType {
+  UNSTYLED = 'unstyled',
+  UNDERLINED = 'underlined',
+  COLORED = 'colored',
 }
-/*
+
 export type Style =
   | { type: 'unstyled' }
   | { type: 'underlined' }
-  | { type: 'colored' };
-//varför får jag inte används mina coola typer*/
+  | { type: 'colored'; color: string };

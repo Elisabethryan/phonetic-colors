@@ -8,16 +8,17 @@ import { Style } from 'src/types/general/letter';
 @Injectable()
 export class TextService {
   //TEMPORARY TEST DATA
+  //TODO make these types make sense
   formattedA = {
     id: '1',
     letter: 'A' as LatinLetter,
-    style: 'colored' as Style, //{ type: 'colored', color: 'green' },
+    style: { type: 'colored', color: 'pink' } as Style,
   };
 
   formattedB = {
     id: '2',
     letter: 'B' as LatinLetter,
-    style: 'colored' as Style, //{ type: 'colored', color: 'green' },
+    style: { type: 'colored', color: 'green' } as Style,
   };
 
   text: Text = {

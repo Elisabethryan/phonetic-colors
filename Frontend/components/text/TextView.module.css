@@ -1,0 +1,12 @@
+/*TODO FORMATTING*/
+
+.letter {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.textView {
+  display: flex;
+  padding-left: 20%;
+  padding-top: 2rem;
+}
