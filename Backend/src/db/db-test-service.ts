@@ -7,7 +7,6 @@ export class DbTestService {
   constructor(private configService: ConfigService) {}
 
   async checkConnection() {
-    console.log(this.configService.get<string>('POSTGRES_PASSWORD'));
     const client = new Client({
       host: this.configService.get<string>('DB_HOST', 'localhost'),
       port: Number(this.configService.get<number>('DB_PORT', 5432)),
