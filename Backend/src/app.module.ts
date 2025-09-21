@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TextModule } from './text/text.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TextModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), TextModule],
   controllers: [AppController],
   providers: [AppService],
 })
