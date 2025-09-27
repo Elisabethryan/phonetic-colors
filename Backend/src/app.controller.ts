@@ -6,21 +6,8 @@ import { ExtendedListItem } from './types/general/stringList';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('list-items')
-  getListItems(): ExtendedListItem[] {
-    const list = this.appService.getListItems();
-    return list;
-  }
-
-  @Get('list-item-info/:name')
-  getListItem(@Param('name') name: string): ExtendedListItem | undefined {
-    const extendedItem = this.appService.getItemInfo(name);
-    return extendedItem;
-  }
-
-  @Post('add-item')
-  addItem(@Body() body: { name: string }): ExtendedListItem {
-    const newItem = this.appService.addItem(body.name);
-    return newItem;
+  @Get('health')
+  getHealth(): { message: string } {
+    return { message: this.appService.getHealth() };
   }
 }
