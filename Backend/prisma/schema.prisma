@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
@@ -14,15 +14,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Letter {
-  id        Int      @id @default(autoincrement())
-  title     String
-  createdAt DateTime @default(now())
-}
-
 model Text {
   id        Int      @id @default(autoincrement())
   content   String
-  letterId  Int
   createdAt DateTime @default(now())
+}
+
+model FormattedLetter {
+  id        String    @id @default(uuid())
+  letter    String
+  styleType StyleType
+  color     String?
+  createdAt DateTime  @default(now())
+}
+
+enum StyleType {
+  unstyled
+  underlined
+  colored
 }

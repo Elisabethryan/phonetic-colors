@@ -25,7 +25,8 @@ export class DbTestService {
     try {
       console.log('Connecting to database in environment: ', environment);
       await client.connect();
-      const result = await client.query('SELECT NOW()');
+      const result = await client.query('SELECT * FROM "FormattedLetter"');
+      console.log('result:', result.rows);
       return { message: 'Connected ✅', serverTime: result.rows[0] };
     } catch (err) {
       console.error(err);
