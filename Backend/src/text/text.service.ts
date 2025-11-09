@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ExtendedListItem } from '../types/general/stringList';
-import { v4 as uuidv4 } from 'uuid';
 import { DbText, Text } from 'src/types/general/text';
 import { LatinLetter } from 'src/types/general/latinLetter';
 import { FormattedLetter, Style } from 'src/types/general/letter';
+import { DatabaseService } from '../db/database.service';
 
 @Injectable()
 export class TextService {
+  constructor(private databaseService: DatabaseService) {}
   //TEMPORARY TEST DATA
   //TODO make these types make sense
   formattedA = {
@@ -28,37 +28,64 @@ export class TextService {
     text: [this.formattedA, this.formattedB, this.formattedB, this.formattedA],
   };
 
-  mockDbText: DbText = {
-    id: '123456',
-    text: ['1', '2', '2', '1'],
-  };
+  mockDbTexts: DbText[] = [
+    {
+      id: '12345',
+      text: [
+        '7a8e7b05-3872-4ffb-9a9e-1b580043e270',
+        '4933c72e-78c5-4f84-a66d-64cdd56d61e9',
+        '7a8e7b05-3872-4ffb-9a9e-1b580043e270',
+        '4933c72e-78c5-4f84-a66d-64cdd56d61e9',
+      ],
+    },
+  ];
 
   texts: Text[] = [this.text];
 
-  getText(textId: string): Text | undefined {
+  async getText(textId: string): Promise<Text | undefined> {
+    console.log('IM IN T`GET TEXT');
     console.log(textId);
-    const text = this.texts.find((doc) => doc.id === textId);
-    return text;
+    const formattedLetters = (await this.databaseService.query(
+      'SELECT * FROM "FormattedLetter"',
+    )) as FormattedLetter[];
+    const text = this.mockDbTexts.find((doc) => doc.id === textId);
+
+    if (!text) {
+      return undefined;
+    }
+    const formattedLetterText = text?.text.map((letterId) => {
+      const letter = formattedLetters.find(
+        (formattedLetter) => formattedLetter.id === letterId,
+      );
+      if (letter) {
+        return letter;
+      } else {
+        throw Error('Could not find letter');
+      }
+    });
+
+    return { id: text.id, text: formattedLetterText };
   }
 
   dbLoadText(textId: string): Text | undefined {
+    return;
     //TODO rethink solution when we have a connection to postgres
-    const dbText = this.mockDbText;
-    const formattedLetterText: FormattedLetter[] = dbText.text.map(
-      (letterId) => {
-        const formattedLetter = this.mockDbFormattedLetters.find((letter) => {
-          return letterId === letter.id;
-        });
-        if (formattedLetter) {
-          return formattedLetter;
-        } else {
-          throw Error('Could not find letter');
-        }
-      },
-    );
-    return {
-      ...dbText,
-      text: formattedLetterText,
-    };
+    // const dbText = this.mockDbText;
+    // const formattedLetterText: FormattedLetter[] = dbText.text.map(
+    //   (letterId) => {
+    //     const formattedLetter = this.mockDbFormattedLetters.find((letter) => {
+    //       return letterId === letter.id;
+    //     });
+    //     if (formattedLetter) {
+    //       return formattedLetter;
+    //     } else {
+    //       throw Error('Could not find letter');
+    //     }
+    //   },
+    // );
+    // return {
+    //   ...dbText,
+    //   text: formattedLetterText,
+    // };
   }
 }
