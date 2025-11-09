@@ -42,29 +42,43 @@ export class TextService {
 
   texts: Text[] = [this.text];
 
-  async getText(textId: string): Promise<Text | undefined> {
-    console.log('IM IN T`GET TEXT');
-    console.log(textId);
+  async getFormattedLettersFromIds(
+    letterIds: string[],
+  ): Promise<FormattedLetter[]> {
+    //todo is going to the database each time inefficient?
     const formattedLetters = (await this.databaseService.query(
-      'SELECT * FROM "FormattedLetter"',
+      'SELECT * FROM "FormattedLetter" where id IN (' +
+        letterIds.map((id) => `'${id}'`).join(',') +
+        ')',
     )) as FormattedLetter[];
+    const formattedLetterText = letterIds.map((letterId) => {
+      const letter = formattedLetters.find(
+        (formattedLetter) => formattedLetter.id === letterId,
+      );
+      if (!letter) {
+        throw new Error('Could not find letter');
+      }
+      return letter;
+    });
+
+    return formattedLetterText;
+  }
+
+  async getText(textId: string): Promise<Text | undefined> {
+    // const texts = await this.databaseService.query(
+    //   'SELECT * FROM "DbText" WHERE id=' + `'${textId}'`,
+    // );
+
     const text = this.mockDbTexts.find((doc) => doc.id === textId);
 
     if (!text) {
       return undefined;
     }
-    const formattedLetterText = text?.text.map((letterId) => {
-      const letter = formattedLetters.find(
-        (formattedLetter) => formattedLetter.id === letterId,
-      );
-      if (letter) {
-        return letter;
-      } else {
-        throw Error('Could not find letter');
-      }
-    });
 
-    return { id: text.id, text: formattedLetterText };
+    return {
+      id: text.id,
+      text: await this.getFormattedLettersFromIds(text.text),
+    };
   }
 
   dbLoadText(textId: string): Text | undefined {
