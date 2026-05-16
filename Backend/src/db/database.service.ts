@@ -22,11 +22,11 @@ export class DatabaseService {
         });
   }
 
-  async query<T>(sql: string): Promise<T[]> {
+  async query<T>(sql: string, params: unknown[] = []): Promise<T[]> {
     const client = await this.getClient();
     try {
       await client.connect();
-      const result = await client.query(sql);
+      const result = await client.query(sql, params);
       return result.rows;
     } finally {
       await client.end();
