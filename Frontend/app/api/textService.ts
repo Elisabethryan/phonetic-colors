@@ -25,9 +25,7 @@ async function parseOptionalJson<T>(res: Response): Promise<T | undefined> {
   }
 }
 
-export async function fetchText(
-  id: string
-): Promise<StoryText | undefined> {
+export async function fetchText(id: string): Promise<StoryText | undefined> {
   try {
     const res = await fetch(`${getBackendUrl()}/text/${id}`);
 
@@ -62,7 +60,7 @@ export async function fetchLatestText(): Promise<StoryText | undefined> {
 }
 
 export async function createText(
-  formattedLetters: CreateFormattedLetter[]
+  formattedLetters: CreateFormattedLetter[],
 ): Promise<StoryText | undefined> {
   try {
     const res = await fetch(`${getBackendUrl()}/text`, {

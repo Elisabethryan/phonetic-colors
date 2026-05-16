@@ -15,9 +15,11 @@ const DEFAULT_COLOR = "#0f766e";
 
 function toDraftLetters(
   value: string,
-  previous: CreateFormattedLetter[]
+  previous: CreateFormattedLetter[],
 ): CreateFormattedLetter[] {
-  const lettersOnly = value.split("").filter((char) => /[A-Za-zÅÄÖåäö]/.test(char));
+  const lettersOnly = value
+    .split("")
+    .filter((char) => /[A-Za-zÅÄÖåäö]/.test(char));
 
   return lettersOnly.map((char, index) => {
     const previousLetter = previous[index];
@@ -38,7 +40,7 @@ function TextView() {
   const [loading, setLoading] = useState(true);
   const [rawText, setRawText] = useState("Hej");
   const [draftLetters, setDraftLetters] = useState<CreateFormattedLetter[]>(
-    toDraftLetters("Hej", [])
+    toDraftLetters("Hej", []),
   );
 
   useEffect(() => {
@@ -52,7 +54,8 @@ function TextView() {
       const story = await fetchLatestText();
       setText(story?.text);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load text";
+      const message =
+        err instanceof Error ? err.message : "Failed to load text";
       setError(message);
     } finally {
       setLoading(false);
@@ -75,7 +78,8 @@ function TextView() {
       next[index] = {
         ...current,
         styleType: newStyleType,
-        color: newStyleType === "colored" ? (current.color ?? DEFAULT_COLOR) : null,
+        color:
+          newStyleType === "colored" ? (current.color ?? DEFAULT_COLOR) : null,
       };
 
       return next;
@@ -116,7 +120,8 @@ function TextView() {
 
       setText(savedText.text);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Could not save text";
+      const message =
+        err instanceof Error ? err.message : "Could not save text";
       setError(message);
     } finally {
       setLoading(false);
@@ -138,18 +143,27 @@ function TextView() {
           placeholder="Plain text (example: Hej)"
         />
 
-        <button type="button" onClick={handleSaveText} className={styles.button}>
+        <button
+          type="button"
+          onClick={handleSaveText}
+          className={styles.button}
+        >
           Save Formatted Text
         </button>
       </div>
 
       <div className={styles.letterEditor}>
         {draftLetters.map((letter, index) => (
-          <div key={`${letter.letter}-${index}`} className={styles.letterEditorItem}>
+          <div
+            key={`${letter.letter}-${index}`}
+            className={styles.letterEditorItem}
+          >
             <span className={styles.letterValue}>{letter.letter}</span>
             <select
               value={letter.styleType}
-              onChange={(event) => updateDraftStyle(index, event.target.value as StyleType)}
+              onChange={(event) =>
+                updateDraftStyle(index, event.target.value as StyleType)
+              }
               className={styles.selectInput}
               aria-label={`Style for letter ${letter.letter}`}
             >

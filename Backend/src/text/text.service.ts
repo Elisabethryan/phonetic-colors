@@ -3,10 +3,7 @@ import { randomUUID } from 'crypto';
 import { DbText, Text } from 'src/types/general/text';
 import { DbFormattedLetter, StyleType } from 'src/types/general/letter';
 import { DatabaseService } from '../db/database.service';
-import {
-  CreateFormattedLetterDto,
-  CreateTextDto,
-} from './dto/create-text.dto';
+import { CreateFormattedLetterDto, CreateTextDto } from './dto/create-text.dto';
 
 @Injectable()
 export class TextService {
