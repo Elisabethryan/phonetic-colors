@@ -17,7 +17,7 @@ export class TextService {
     }
 
     const formattedLetters = (await this.databaseService.query(
-      'SELECT id, letter, "styleType", color FROM "FormattedLetter" WHERE id = ANY($1::uuid[])',
+      'SELECT id, letter, "styleType", color FROM "FormattedLetter" WHERE id = ANY($1::text[])',
       [letterIds],
     )) as DbFormattedLetter[];
 
