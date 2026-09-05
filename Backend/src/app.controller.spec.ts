@@ -14,9 +14,11 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Backend is healthy"', () => {
-      expect(appController.getHealth()).toBe('Backend is healthy');
+  describe('getHealth', () => {
+    it('returns the health message in an API response object', () => {
+      expect(appController.getHealth()).toEqual({
+        message: 'Backend is healthy',
+      });
     });
   });
 });
