@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TextController } from './text.controller';
 import { TextService } from './text.service';
-import { DbTestService } from 'src/db/db-test-service';
+import { DatabaseModule } from '../db/database.module';
 
 @Module({
-  imports: [],
+  imports: [DatabaseModule],
   controllers: [TextController],
-  providers: [TextService, DbTestService],
+  providers: [TextService],
 })
 export class TextModule {}
