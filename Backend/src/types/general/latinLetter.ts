@@ -56,4 +56,6 @@ export type LatinLetter =
   | "z"
   | "å"
   | "ä"
-  | "ö";
+  | "ö"
+  | " "
+  | ".";

@@ -3,10 +3,12 @@
 .letter {
   font-weight: bold;
   font-size: 30px;
+  white-space: pre;
 }
 
 .textView {
   display: flex;
+  gap: 0.05em;
   padding-left: 20%;
   padding-top: 2rem;
 }
