@@ -3,7 +3,8 @@ import { LatinLetter } from './latinLetter';
 export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
-  style: Style;
+  styleType: StyleType;
+  color: string | null;
 }
 
 export enum StyleType {
@@ -12,7 +13,3 @@ export enum StyleType {
   COLORED = 'colored',
 }
 
-export type Style =
-  | { type: 'unstyled' }
-  | { type: 'underlined' }
-  | { type: 'colored'; color: string };
