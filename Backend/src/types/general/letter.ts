@@ -6,13 +6,6 @@ export interface FormattedLetter {
   style: Style;
 }
 
-export interface DbFormattedLetter {
-  id: string;
-  letter: LatinLetter;
-  styleType: StyleType;
-  color: string | null;
-}
-
 export enum StyleType {
   UNSTYLED = 'unstyled',
   UNDERLINED = 'underlined',

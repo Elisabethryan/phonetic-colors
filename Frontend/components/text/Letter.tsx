@@ -11,12 +11,7 @@ function Letter({ letter }: LetterProps) {
     <div>
       <span
         style={{
-          color:
-            letter.styleType === "colored"
-              ? (letter.color ?? "black")
-              : "black",
-          textDecoration:
-            letter.styleType === "underlined" ? "underline" : "none",
+          color: letter.style.type === "colored" ? letter.style.color : "blue",
         }}
         className={styles.letter}
       >

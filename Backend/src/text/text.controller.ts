@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TextService } from './text.service';
+import { ExtendedListItem } from '../types/general/stringList';
 import { Text } from 'src/types/general/text';
 import { DbTestService } from '../db/db-test-service';
-import { CreateTextDto } from './dto/create-text.dto';
 
 @Controller()
 export class TextController {
@@ -11,19 +11,10 @@ export class TextController {
     private readonly dbTestService: DbTestService,
   ) {}
 
-  @Get('text/latest')
-  async getLatestText(): Promise<Text | undefined> {
-    return this.textService.getLatestText();
-  }
-
   @Get('text/:id')
-  async getText(@Param('id') id: string): Promise<Text | undefined> {
-    return this.textService.getText(id);
-  }
-
-  @Post('text')
-  async createText(@Body() createTextDto: CreateTextDto): Promise<Text> {
-    return this.textService.createText(createTextDto);
+  getListItem(@Param('id') id: string): Text | undefined {
+    const extendedItem = this.textService.getText(id);
+    return extendedItem;
   }
 
   @Get('testdb')
