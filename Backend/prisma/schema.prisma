@@ -11,21 +11,38 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Text {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
+  id          String       @id @default(uuid())
+  title       String
+  content     String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  textLetters TextLetter[]
 }
 
 model FormattedLetter {
-  id        String    @id @default(uuid())
-  letter    String
-  styleType StyleType
-  color     String?
-  createdAt DateTime  @default(now())
+  id          String       @id @default(uuid())
+  letter      String
+  styleType   StyleType     @default(unstyled)
+  color       String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  textLetters TextLetter[]
+}
+
+model TextLetter {
+  id                String          @id @default(uuid())
+  textId            String
+  formattedLetterId String
+  position          Int
+  createdAt         DateTime        @default(now())
+  text              Text            @relation(fields: [textId], references: [id], onDelete: Cascade)
+  formattedLetter   FormattedLetter @relation(fields: [formattedLetterId], references: [id], onDelete: Restrict)
+
+  @@unique([textId, position])
+  @@index([formattedLetterId])
 }
 
 enum StyleType {
