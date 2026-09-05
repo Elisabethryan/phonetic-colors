@@ -8,7 +8,7 @@ type LetterProps = {
 
 function Letter({ letter }: LetterProps) {
   return (
-    <div>
+    <span>
       <span
         style={{
           color:
@@ -20,7 +20,7 @@ function Letter({ letter }: LetterProps) {
       >
         {letter.letter}
       </span>
-    </div>
+    </span>
   );
 }
 

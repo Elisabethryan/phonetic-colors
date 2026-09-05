@@ -58,4 +58,6 @@ export type LatinLetter =
   | "ä"
   | "ö"
   | " "
-  | ".";
+  | "."
+  | ","
+  | "\n";

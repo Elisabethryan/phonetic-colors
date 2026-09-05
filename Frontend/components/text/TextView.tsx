@@ -10,7 +10,7 @@ function TextView() {
   const [text, setText] = useState<FormattedLetter[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [textId, setTextId] = useState("12345");
+  const [textId, setTextId] = useState("2345678");
 
   useEffect(() => {
     setLoading(true);
@@ -37,9 +37,13 @@ function TextView() {
 
   return (
     <div className={styles.textView}>
-      {text.map((letter, index) => (
-        <Letter key={`${letter.id}-${index}`} letter={letter} />
-      ))}
+      {text.map((letter, index) =>
+        letter.letter === "\n" ? (
+          <br key={`line-break-${index}`} />
+        ) : (
+          <Letter key={`${letter.id}-${index}`} letter={letter} />
+        )
+      )}
     </div>
   );
 }
