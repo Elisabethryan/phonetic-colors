@@ -1,11 +1,11 @@
-import { DbFormattedLetter } from './letter';
+import { FormattedLetter } from './letter';
 
 export interface Text {
   id: string;
-  text: DbFormattedLetter[];
+  text: FormattedLetter[];
 }
 
 export interface DbText {
-  id: number;
-  content: string[];
+  id: string;
+  text: string[];
 }

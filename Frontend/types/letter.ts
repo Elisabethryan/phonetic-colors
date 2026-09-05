@@ -1,13 +1,11 @@
 import { LatinLetter } from "./latinLetter";
 
-export type StyleType = "unstyled" | "underlined" | "colored";
-
 export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
   //style?: Style; Todo add this cooler type
-  styleType: StyleType;
-  color: string | null;
+  styleType: string;
+  color: string;
 }
 
 /* Todo this cool style is unused

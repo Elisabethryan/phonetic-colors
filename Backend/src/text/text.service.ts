@@ -1,26 +1,56 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { DbText, Text } from 'src/types/general/text';
-import { DbFormattedLetter, StyleType } from 'src/types/general/letter';
+import { LatinLetter } from 'src/types/general/latinLetter';
+import { FormattedLetter, Style } from 'src/types/general/letter';
 import { DatabaseService } from '../db/database.service';
-import { CreateFormattedLetterDto, CreateTextDto } from './dto/create-text.dto';
 
 @Injectable()
 export class TextService {
   constructor(private databaseService: DatabaseService) {}
+  //TEMPORARY TEST DATA
+  //TODO make these types make sense
+  formattedA = {
+    id: '1',
+    letter: 'A' as LatinLetter,
+    style: { type: 'colored', color: 'pink' } as Style,
+  };
+
+  formattedB = {
+    id: '2',
+    letter: 'B' as LatinLetter,
+    style: { type: 'colored', color: 'green' } as Style,
+  };
+
+  mockDbFormattedLetters = [this.formattedA, this.formattedB];
+
+  text: Text = {
+    id: '12345',
+    text: [this.formattedA, this.formattedB, this.formattedB, this.formattedA],
+  };
+
+  mockDbTexts: DbText[] = [
+    {
+      id: '12345',
+      text: [
+        '7a8e7b05-3872-4ffb-9a9e-1b580043e270',
+        '4933c72e-78c5-4f84-a66d-64cdd56d61e9',
+        '7a8e7b05-3872-4ffb-9a9e-1b580043e270',
+        '4933c72e-78c5-4f84-a66d-64cdd56d61e9',
+      ],
+    },
+  ];
+
+  texts: Text[] = [this.text];
 
   async getFormattedLettersFromIds(
     letterIds: string[],
-  ): Promise<DbFormattedLetter[]> {
-    if (letterIds.length === 0) {
-      return [];
-    }
-
+  ): Promise<FormattedLetter[]> {
+    //todo is going to the database each time inefficient?
     const formattedLetters = (await this.databaseService.query(
-      'SELECT id, letter, "styleType", color FROM "FormattedLetter" WHERE id = ANY($1::text[])',
-      [letterIds],
-    )) as DbFormattedLetter[];
-
+      'SELECT * FROM "FormattedLetter" where id IN (' +
+        letterIds.map((id) => `'${id}'`).join(',') +
+        ')',
+    )) as FormattedLetter[];
     const formattedLetterText = letterIds.map((letterId) => {
       const letter = formattedLetters.find(
         (formattedLetter) => formattedLetter.id === letterId,
@@ -35,73 +65,41 @@ export class TextService {
   }
 
   async getText(textId: string): Promise<Text | undefined> {
-    const numericTextId = Number(textId);
-    if (Number.isNaN(numericTextId)) {
-      return undefined;
-    }
+    // const texts = await this.databaseService.query(
+    //   'SELECT * FROM "DbText" WHERE id=' + `'${textId}'`,
+    // );
 
-    const texts = await this.databaseService.query<DbText>(
-      'SELECT id, content FROM "Text" WHERE id = $1',
-      [numericTextId],
-    );
-    const text = texts[0];
+    const text = this.mockDbTexts.find((doc) => doc.id === textId);
 
     if (!text) {
       return undefined;
     }
 
     return {
-      id: String(text.id),
-      text: await this.getFormattedLettersFromIds(text.content),
+      id: text.id,
+      text: await this.getFormattedLettersFromIds(text.text),
     };
   }
 
-  async getLatestText(): Promise<Text | undefined> {
-    const texts = await this.databaseService.query<DbText>(
-      'SELECT id, content FROM "Text" ORDER BY "createdAt" DESC LIMIT 1',
-    );
-    const text = texts[0];
-    if (!text) {
-      return undefined;
-    }
-
-    return {
-      id: String(text.id),
-      text: await this.getFormattedLettersFromIds(text.content),
-    };
-  }
-
-  async createText(createTextDto: CreateTextDto): Promise<Text> {
-    const insertedLetters: DbFormattedLetter[] = [];
-
-    for (const letter of createTextDto.formattedLetters) {
-      const inserted = await this.createFormattedLetter(letter);
-      insertedLetters.push(inserted);
-    }
-
-    const insertedTextRows = await this.databaseService.query<DbText>(
-      'INSERT INTO "Text" (content) VALUES ($1::text[]) RETURNING id, content',
-      [insertedLetters.map((letter) => letter.id)],
-    );
-
-    return {
-      id: String(insertedTextRows[0].id),
-      text: insertedLetters,
-    };
-  }
-
-  private async createFormattedLetter(
-    letter: CreateFormattedLetterDto,
-  ): Promise<DbFormattedLetter> {
-    const id = randomUUID();
-    const color =
-      letter.styleType === StyleType.COLORED ? (letter.color ?? 'black') : null;
-
-    const insertedRows = await this.databaseService.query<DbFormattedLetter>(
-      'INSERT INTO "FormattedLetter" (id, letter, "styleType", color) VALUES ($1, $2, $3, $4) RETURNING id, letter, "styleType", color',
-      [id, letter.letter, letter.styleType, color],
-    );
-
-    return insertedRows[0];
+  dbLoadText(textId: string): Text | undefined {
+    return;
+    //TODO rethink solution when we have a connection to postgres
+    // const dbText = this.mockDbText;
+    // const formattedLetterText: FormattedLetter[] = dbText.text.map(
+    //   (letterId) => {
+    //     const formattedLetter = this.mockDbFormattedLetters.find((letter) => {
+    //       return letterId === letter.id;
+    //     });
+    //     if (formattedLetter) {
+    //       return formattedLetter;
+    //     } else {
+    //       throw Error('Could not find letter');
+    //     }
+    //   },
+    // );
+    // return {
+    //   ...dbText,
+    //   text: formattedLetterText,
+    // };
   }
 }
