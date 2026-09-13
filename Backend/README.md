@@ -31,6 +31,21 @@
 $ npm install
 ```
 
+## Database setup
+
+The formatted A-Z alphabet is seeded with stable colors. The seed is idempotent,
+so it can be run again without creating duplicates.
+
+```bash
+$ npm run db:setup
+```
+
+For Railway, set `DATABASE_URL` on the Backend service, then run `npm run db:setup`
+once after deploying this branch. You can run it from a Railway shell or add it to
+the service deploy command before `npm run start:prod`. Set
+`NEXT_PUBLIC_API_URL` on the Frontend service to the Backend's public URL so the
+home page can request `GET /letter`.
+
 ## Compile and run the project
 
 ```bash

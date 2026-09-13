@@ -4,8 +4,8 @@ export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
   //style?: Style; Todo add this cooler type
-  styleType: string;
-  color: string;
+  styleType: 'unstyled' | 'underlined' | 'colored';
+  color: string | null;
 }
 
 /* Todo this cool style is unused
