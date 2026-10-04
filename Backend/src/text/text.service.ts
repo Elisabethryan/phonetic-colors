@@ -27,6 +27,12 @@ export class TextService {
     return rows[0];
   }
 
+  async getTextList(): Promise<{ id: number; title: string }[]> {
+    return this.databaseService.query<{ id: number; title: string }>(
+      'SELECT id, title FROM "Text" ORDER BY id ASC',
+    );
+  }
+
   async getText(textId: string): Promise<Text | undefined> {
     const id = Number(textId);
     if (!Number.isInteger(id)) {

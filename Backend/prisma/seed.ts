@@ -124,22 +124,50 @@ async function main() {
 
   console.log(`Seeded ${phonemes.length} phonemes.`);
 
-  const previousSampleTitle = 'Hej kaka';
-  const sampleTitle = 'Solen skiner över sjön.';
-  const transcription =
-    'S=s o=uː l=l e=ɛ n=n _ sk=ɧ i=iː n=n e=ɛ r=r _ ö=øː v=v e=ɛ r=r _ sj=ɧ ö=øː n=n .';
-  const sample =
-    (await prisma.text.findFirst({ where: { title: previousSampleTitle } })) ??
-    (await prisma.text.findFirst({ where: { title: sampleTitle } }));
-  if (sample) {
-    await prisma.text.update({
-      where: { id: sample.id },
-      data: { title: sampleTitle, transcription },
-    });
-  } else {
-    await prisma.text.create({ data: { title: sampleTitle, transcription } });
+  const sampleTexts: {
+    previousTitle?: string;
+    title: string;
+    transcription: string;
+  }[] = [
+    {
+      previousTitle: 'Hej kaka',
+      title: 'Solen skiner över sjön.',
+      transcription:
+        'S=s o=uː l=l e=ɛ n=n _ sk=ɧ i=iː n=n e=ɛ r=r _ ö=øː v=v e=ɛ r=r _ sj=ɧ ö=øː n=n .',
+    },
+    {
+      title: 'Katten sitter på stolen.',
+      transcription:
+        'K=k a=a tt=t e=ɛ n=n _ s=s i=ɪ tt=t e=ɛ r=r _ p=p å=oː _ s=s t=t o=uː l=l e=ɛ n=n .',
+    },
+    {
+      title: 'Båten är blå.',
+      transcription: 'B=b å=oː t=t e=ɛ n=n _ ä=ɛː r=r _ b=b l=l å=oː .',
+    },
+    {
+      title: 'En röd bil står här.',
+      transcription:
+        'E=ɛ n=n _ r=r ö=øː d=d _ b=b i=iː l=l _ s=s t=t å=oː r=r _ h=h ä=ɛː r=r .',
+    },
+  ];
+
+  for (const { previousTitle, title, transcription } of sampleTexts) {
+    const previousSample = previousTitle
+      ? await prisma.text.findFirst({ where: { title: previousTitle } })
+      : undefined;
+    const sample =
+      previousSample ?? (await prisma.text.findFirst({ where: { title } }));
+
+    if (sample) {
+      await prisma.text.update({
+        where: { id: sample.id },
+        data: { title, transcription },
+      });
+    } else {
+      await prisma.text.create({ data: { title, transcription } });
+    }
   }
-  console.log(`Seeded sample text "${sampleTitle}".`);
+  console.log(`Seeded ${sampleTexts.length} sample texts.`);
 }
 
 main()

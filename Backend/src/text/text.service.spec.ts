@@ -11,6 +11,19 @@ describe('TextService', () => {
     databaseService.query.mockReset();
   });
 
+  it('lists available texts in ID order', async () => {
+    const texts = [
+      { id: 1, title: 'Solen skiner över sjön.' },
+      { id: 2, title: 'Katten sitter på stolen.' },
+    ];
+    databaseService.query.mockResolvedValueOnce(texts);
+
+    await expect(textService.getTextList()).resolves.toEqual(texts);
+    expect(databaseService.query).toHaveBeenCalledWith(
+      'SELECT id, title FROM "Text" ORDER BY id ASC',
+    );
+  });
+
   it('renders annotated spelling groups with their phoneme styles', async () => {
     databaseService.query
       .mockResolvedValueOnce([
