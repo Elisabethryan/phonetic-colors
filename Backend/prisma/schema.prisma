@@ -26,6 +26,27 @@ model FormattedLetter {
   styleType StyleType
   color     String?
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// A distinct Swedish sound. Its color/style applies to every Latin spelling of that sound.
+model Phoneme {
+  id        String            @id @default(uuid())
+  symbol    String            @unique
+  styleType StyleType
+  color     String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  spellings PhonemeSpelling[]
+}
+
+// A Latin-letter rendering of a phoneme, e.g. the phoneme /k/ can be spelled "k".
+model PhonemeSpelling {
+  id        String   @id @default(uuid())
+  phonemeId String
+  phoneme   Phoneme  @relation(fields: [phonemeId], references: [id])
+  spelling  String
+  createdAt DateTime @default(now())
 }
 
 enum StyleType {

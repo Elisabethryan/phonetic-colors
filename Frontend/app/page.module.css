@@ -1,7 +1,69 @@
-.home h1{
-  padding: 2rem;
-  background-color: pink;
-  text-align: center;
-  color: cornflowerblue;
-  margin: 0;
+.home {
+  --ink: #17324d;
+  --paper: #fffdf7;
+  --line: #d8e2d1;
+  min-height: 100vh;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 8vw, 9rem);
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg, transparent 49px, #ebf0e7 50px);
+  background-size: 50px 50px;
+}
+
+.intro {
+  max-width: 42rem;
+  margin-bottom: 3rem;
+}
+
+.kicker {
+  margin-bottom: 0.6rem;
+  color: #3d735f;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.intro h1 {
+  margin-bottom: 0.6rem;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.intro p:not(.kicker) {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.letterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+  max-width: 64rem;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.letterGrid li {
+  display: grid;
+  min-height: 7rem;
+  place-items: center;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 92%, white);
+}
+
+.letter {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.unavailable {
+  max-width: 32rem;
+  padding: 1rem;
+  border-left: 4px solid #b45309;
+  background: #fff3d6;
+  color: #713c08;
 }
