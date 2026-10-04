@@ -1,7 +1,7 @@
-import { fetchLetters } from '@/app/api/letterService';
-import styles from './page.module.css';
+import { fetchLetters } from "@/app/api/letterService";
+import styles from "./page.module.css";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const letters = await fetchLetters();
@@ -22,11 +22,11 @@ export default async function Home() {
                 className={styles.letter}
                 style={{
                   color:
-                    letter.styleType === 'colored'
+                    letter.styleType === "colored"
                       ? (letter.color ?? undefined)
                       : undefined,
                   textDecoration:
-                    letter.styleType === 'underlined' ? 'underline' : undefined,
+                    letter.styleType === "underlined" ? "underline" : undefined,
                 }}
               >
                 {letter.letter}
