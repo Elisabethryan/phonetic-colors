@@ -49,6 +49,18 @@ async function main() {
   }
 
   console.log(`Seeded ${phonemes.length} phonemes.`);
+
+  const sampleTitle = 'Hej kaka';
+  const sampleExists = await prisma.text.findFirst({
+    where: { title: sampleTitle },
+  });
+  if (!sampleExists) {
+    // "_" renders as a literal space; other tokens must match a Phoneme symbol.
+    await prisma.text.create({
+      data: { title: sampleTitle, transcription: 'H E J _ k A ɕ A' },
+    });
+    console.log(`Seeded sample text "${sampleTitle}".`);
+  }
 }
 
 main()

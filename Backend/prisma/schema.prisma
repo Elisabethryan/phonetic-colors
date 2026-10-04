@@ -15,9 +15,11 @@ datasource db {
 }
 
 model Text {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  title         String
+  // Space-separated Phoneme symbols; tokens not matching a symbol render as literal unstyled text.
+  transcription String
+  createdAt     DateTime @default(now())
 }
 
 model FormattedLetter {

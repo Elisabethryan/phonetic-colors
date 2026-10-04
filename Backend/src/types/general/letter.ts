@@ -1,18 +1,7 @@
-import { LatinLetter } from './latinLetter';
+export type StyleType = 'unstyled' | 'underlined' | 'colored';
 
 export interface FormattedLetter {
-  id: string;
-  letter: LatinLetter;
-  style: Style;
+  letter: string;
+  styleType: StyleType;
+  color: string | null;
 }
-
-export enum StyleType {
-  UNSTYLED = 'unstyled',
-  UNDERLINED = 'underlined',
-  COLORED = 'colored',
-}
-
-export type Style =
-  | { type: 'unstyled' }
-  | { type: 'underlined' }
-  | { type: 'colored'; color: string };

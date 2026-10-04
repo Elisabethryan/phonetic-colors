@@ -4,7 +4,7 @@ export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
   //style?: Style; Todo add this cooler type
-  styleType: 'unstyled' | 'underlined' | 'colored';
+  styleType: "unstyled" | "underlined" | "colored";
   color: string | null;
 }
 

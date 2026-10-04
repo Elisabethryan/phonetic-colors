@@ -10,7 +10,7 @@ function TextView() {
   const [text, setText] = useState<FormattedLetter[] | undefined>();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [textId, setTextId] = useState("12345");
+  const [textId, setTextId] = useState("1");
 
   useEffect(() => {
     fetchText(textId)
