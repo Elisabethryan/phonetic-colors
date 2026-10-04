@@ -2,32 +2,94 @@
 
 import { useEffect, useState } from "react";
 import styles from "./TextView.module.css";
-import { fetchText } from "@/app/api/textService";
+import { fetchText, fetchTexts, TextListItem } from "@/app/api/textService";
 import { FormattedLetter } from "@/types/letter";
 import Letter from "./Letter";
 
 function TextView() {
   const [text, setText] = useState<FormattedLetter[] | undefined>();
+  const [sampleTexts, setSampleTexts] = useState<TextListItem[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [textId, setTextId] = useState("1");
+  const [textId, setTextId] = useState("");
 
   useEffect(() => {
-    fetchText(textId)
-      .then((story) => setText(story ? story.text : undefined))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    let cancelled = false;
+
+    fetchTexts().then((items) => {
+      if (cancelled) return;
+
+      setSampleTexts(items);
+      if (items.length > 0) {
+        setTextId(String(items[0].id));
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
+  useEffect(() => {
+    if (!textId) return;
+
+    let cancelled = false;
+    setLoading(true);
+    setError("");
+
+    fetchText(textId)
+      .then((story) => {
+        if (cancelled) return;
+        if (!story) {
+          setText(undefined);
+          setError("Could not load the selected text.");
+          return;
+        }
+        setText(story.text);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Could not load text.");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [textId]);
+
   return (
-    <div>
-      {loading ?? "Loading..."}
-      {error}
-      <div className={styles.textView}>
-        {text?.map((letter, index) => (
-          <Letter key={index} letter={letter}></Letter>
-        ))}
-      </div>
+    <div className={styles.textPanel}>
+      {sampleTexts.length > 0 && (
+        <label className={styles.textSelector}>
+          <span>Example text</span>
+          <select
+            value={textId}
+            onChange={(event) => setTextId(event.target.value)}
+          >
+            {sampleTexts.map((sample) => (
+              <option key={sample.id} value={sample.id}>
+                {sample.title}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {loading && <p>Loading...</p>}
+      {error && <p role="alert">{error}</p>}
+      {!loading && !error && !text && <p>No example texts available.</p>}
+      {text && !loading && !error && (
+        <div className={styles.textView}>
+          {text.map((letter, index) => (
+            <Letter key={index} letter={letter} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

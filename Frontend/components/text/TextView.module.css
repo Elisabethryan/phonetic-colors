@@ -1,13 +1,43 @@
-/*TODO FORMATTING*/
-
 .letter {
   font-weight: bold;
   font-size: 30px;
   white-space: pre;
 }
 
+.textPanel {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  padding-top: 2rem;
+}
+
+.textSelector {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 26rem);
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--foreground);
+}
+
+.textSelector select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #64748b;
+  border-radius: 4px;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+}
+
 .textView {
   display: flex;
-  padding-left: 20%;
-  padding-top: 2rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+@media (max-width: 480px) {
+  .textSelector {
+    grid-template-columns: 1fr;
+  }
 }

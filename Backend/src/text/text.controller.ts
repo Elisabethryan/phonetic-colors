@@ -19,6 +19,11 @@ export class TextController {
     );
   }
 
+  @Get('text')
+  getTexts(): Promise<{ id: number; title: string }[]> {
+    return this.textService.getTextList();
+  }
+
   @Get('text/:id')
   async getListItem(@Param('id') id: string): Promise<Text | undefined> {
     const extendedItem = await this.textService.getText(id);

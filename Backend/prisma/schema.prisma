@@ -17,7 +17,7 @@ datasource db {
 model Text {
   id            Int      @id @default(autoincrement())
   title         String
-  // Space-separated Phoneme symbols; tokens not matching a symbol render as literal unstyled text.
+  // Space-separated spelling=IPA tokens; "_" represents a space, plain tokens are unstyled text.
   transcription String
   createdAt     DateTime @default(now())
 }
