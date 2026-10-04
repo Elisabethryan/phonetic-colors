@@ -1,10 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styles from "./TextView.module.css";
 import { fetchText, fetchTexts, TextListItem } from "@/app/api/textService";
 import { FormattedLetter } from "@/types/letter";
 import Letter from "./Letter";
+
+function groupLettersByWord(letters: FormattedLetter[]) {
+  const words: FormattedLetter[][] = [];
+  let currentWord: FormattedLetter[] = [];
+
+  for (const letter of letters) {
+    if (letter.letter.trim() === "") {
+      if (currentWord.length > 0) words.push(currentWord);
+      currentWord = [];
+    } else {
+      currentWord.push(letter);
+    }
+  }
+
+  if (currentWord.length > 0) words.push(currentWord);
+  return words;
+}
 
 function TextView() {
   const [text, setText] = useState<FormattedLetter[] | undefined>();
@@ -63,6 +80,8 @@ function TextView() {
     };
   }, [textId]);
 
+  const words = groupLettersByWord(text ?? []);
+
   return (
     <div className={styles.textPanel}>
       {sampleTexts.length > 0 && (
@@ -85,8 +104,15 @@ function TextView() {
       {!loading && !error && !text && <p>No example texts available.</p>}
       {text && !loading && !error && (
         <div className={styles.textView}>
-          {text.map((letter, index) => (
-            <Letter key={index} letter={letter} />
+          {words.map((word, wordIndex) => (
+            <Fragment key={wordIndex}>
+              {wordIndex > 0 && " "}
+              <span className={styles.word}>
+                {word.map((letter, letterIndex) => (
+                  <Letter key={letterIndex} letter={letter} />
+                ))}
+              </span>
+            </Fragment>
           ))}
         </div>
       )}

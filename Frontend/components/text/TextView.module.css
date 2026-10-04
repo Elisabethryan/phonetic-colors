@@ -1,7 +1,18 @@
 .letter {
+  display: inline-block;
   font-weight: bold;
   font-size: 30px;
+  height: var(--text-row-height, 2.5rem);
+  line-height: var(--text-row-height, 2.5rem);
   white-space: pre;
+}
+
+.word {
+  display: inline-flex;
+  height: var(--text-row-height, 2.5rem);
+  line-height: var(--text-row-height, 2.5rem);
+  vertical-align: top;
+  white-space: nowrap;
 }
 
 .textPanel {
@@ -39,19 +50,12 @@
 }
 
 .textView {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  align-content: flex-start;
+  display: block;
+  line-height: var(--text-row-height, 2.5rem);
   grid-column: 1 / -1;
   grid-row: 2;
   min-height: 14rem;
   padding: 0;
-}
-
-.textView > div {
-  height: var(--text-row-height, 2.5rem);
-  line-height: var(--text-row-height, 2.5rem);
 }
 
 @media (max-width: 640px) {
