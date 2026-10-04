@@ -33,8 +33,15 @@ $ npm install
 
 ## Database setup
 
-The formatted A-Z alphabet is seeded with stable colors. The seed is idempotent,
-so it can be run again without creating duplicates.
+The phoneme inventory is seeded with colors for Central Standard Swedish sounds
+and common spelling examples. It follows the broad IPA inventory described in
+[Engstrand's Swedish IPA overview](https://doi.org/10.1017/S0025100300004060); spelling
+examples are not a complete pronunciation dictionary.
+
+For curated texts, `Text.transcription` contains space-separated `spelling=IPA`
+tokens, such as `sj=ɧ ä=ɛː l=l`. Use `_` for a word space and bare tokens for
+literal unstyled text. This lets a multi-letter spelling group be colored as one
+sound without changing the displayed Swedish spelling.
 
 ```bash
 $ npm run db:setup

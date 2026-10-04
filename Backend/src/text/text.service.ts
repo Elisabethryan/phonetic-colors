@@ -5,7 +5,6 @@ import { DatabaseService } from '../db/database.service';
 
 interface PhonemeRow {
   symbol: string;
-  spelling: string;
   styleType: StyleType;
   color: string | null;
 }
@@ -52,15 +51,23 @@ export class TextService {
     transcription: string,
   ): Promise<FormattedLetter[]> {
     const tokens = transcription.split(/\s+/).filter(Boolean);
-    const symbols = [...new Set(tokens)].filter(
-      (token) => token !== SPACE_TOKEN,
-    );
+    const annotatedTokens = tokens.flatMap((token) => {
+      const separator = token.lastIndexOf('=');
+      return separator > 0 && separator < token.length - 1
+        ? [
+            {
+              spelling: token.slice(0, separator),
+              symbol: token.slice(separator + 1),
+            },
+          ]
+        : [];
+    });
+    const symbols = [...new Set(annotatedTokens.map(({ symbol }) => symbol))];
 
     const phonemes = symbols.length
       ? await this.databaseService.query<PhonemeRow>(
-          'SELECT p.symbol, ps.spelling, p."styleType", p.color ' +
+          'SELECT p.symbol, p."styleType", p.color ' +
             'FROM "Phoneme" p ' +
-            'JOIN "PhonemeSpelling" ps ON ps."phonemeId" = p.id ' +
             'WHERE p.symbol = ANY($1::text[])',
           [symbols],
         )
@@ -74,13 +81,19 @@ export class TextService {
         return { letter: ' ', styleType: 'unstyled', color: null };
       }
 
-      const phoneme = phonemeBySymbol.get(token);
-      if (!phoneme) {
+      const separator = token.lastIndexOf('=');
+      if (separator <= 0 || separator === token.length - 1) {
         return { letter: token, styleType: 'unstyled', color: null };
       }
 
+      const spelling = token.slice(0, separator);
+      const phoneme = phonemeBySymbol.get(token.slice(separator + 1));
+      if (!phoneme) {
+        return { letter: spelling, styleType: 'unstyled', color: null };
+      }
+
       return {
-        letter: phoneme.spelling,
+        letter: spelling,
         styleType: phoneme.styleType,
         color: phoneme.color,
       };
