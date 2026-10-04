@@ -8,21 +8,17 @@ type LetterProps = {
 
 function Letter({ letter }: LetterProps) {
   return (
-    <div>
-      <span
-        style={{
-          color:
-            letter.styleType === "colored"
-              ? (letter.color ?? undefined)
-              : "blue",
-          textDecoration:
-            letter.styleType === "underlined" ? "underline" : "none",
-        }}
-        className={styles.letter}
-      >
-        {letter.letter}
-      </span>
-    </div>
+    <span
+      style={{
+        color:
+          letter.styleType === "colored" ? (letter.color ?? undefined) : "blue",
+        textDecoration:
+          letter.styleType === "underlined" ? "underline" : "none",
+      }}
+      className={styles.letter}
+    >
+      {letter.letter}
+    </span>
   );
 }
 

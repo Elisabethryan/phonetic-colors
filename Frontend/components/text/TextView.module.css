@@ -1,43 +1,71 @@
 .letter {
+  display: inline-block;
   font-weight: bold;
   font-size: 30px;
+  height: var(--text-row-height, 2.5rem);
+  line-height: var(--text-row-height, 2.5rem);
   white-space: pre;
 }
 
+.word {
+  display: inline-flex;
+  height: var(--text-row-height, 2.5rem);
+  line-height: var(--text-row-height, 2.5rem);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
 .textPanel {
-  display: grid;
-  gap: 1rem;
-  width: 100%;
-  padding-top: 2rem;
+  display: contents;
 }
 
 .textSelector {
   display: grid;
-  grid-template-columns: max-content minmax(0, 26rem);
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--foreground);
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  align-self: stretch;
+  gap: 0.4rem;
+  min-height: var(--text-row-height, 2.5rem);
+  padding-left: 1.5rem;
+  color: var(--ink, #17324d);
+  font-weight: 600;
 }
 
 .textSelector select {
   width: 100%;
   min-width: 0;
-  padding: 0.65rem 0.8rem;
-  border: 1px solid #64748b;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #b8c9b5;
   border-radius: 4px;
-  background: var(--background);
-  color: var(--foreground);
+  background: #fffdf7;
+  color: #17324d;
   font: inherit;
 }
 
-.textView {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+.textSelector select:focus-visible {
+  outline: 2px solid #3d735f;
+  outline-offset: 2px;
 }
 
-@media (max-width: 480px) {
+.textView {
+  display: block;
+  line-height: var(--text-row-height, 2.5rem);
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-height: 14rem;
+  padding: 0;
+}
+
+@media (max-width: 640px) {
   .textSelector {
-    grid-template-columns: 1fr;
+    grid-column: 1;
+    grid-row: 2;
+    padding-left: 0;
+  }
+
+  .textView {
+    grid-row: 3;
   }
 }
