@@ -3,72 +3,72 @@ import { PrismaClient, StyleType } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 const phonemes = [
-  { id: 'sv-p', symbol: 'p', color: '#b42318', spellings: ['p', 'pp'] },
-  { id: 'sv-b', symbol: 'b', color: '#c2410c', spellings: ['b', 'bb'] },
-  { id: 'sv-t', symbol: 't', color: '#a16207', spellings: ['t', 'tt'] },
-  { id: 'sv-d', symbol: 'd', color: '#4d7c0f', spellings: ['d', 'dd'] },
+  { id: 'sv-p', symbol: 'p', color: '#e42538', spellings: ['p', 'pp'] },
+  { id: 'sv-b', symbol: 'b', color: '#7f6d10', spellings: ['b', 'bb'] },
+  { id: 'sv-t', symbol: 't', color: '#649a13', spellings: ['t', 'tt'] },
+  { id: 'sv-d', symbol: 'd', color: '#107f44', spellings: ['d', 'dd'] },
   {
     id: 'sv-k',
     symbol: 'k',
-    color: '#047857',
+    color: '#a67707',
     spellings: ['k', 'kk', 'c', 'ck', 'q'],
   },
-  { id: 'sv-g', symbol: 'ɡ', color: '#0f766e', spellings: ['g', 'gg'] },
-  { id: 'sv-f', symbol: 'f', color: '#0e7490', spellings: ['f', 'ff'] },
-  { id: 'sv-v', symbol: 'v', color: '#0369a1', spellings: ['v', 'w'] },
+  { id: 'sv-g', symbol: 'ɡ', color: '#657f10', spellings: ['g', 'gg'] },
+  { id: 'sv-f', symbol: 'f', color: '#107f78', spellings: ['f', 'ff'] },
+  { id: 'sv-v', symbol: 'v', color: '#107f5e', spellings: ['v', 'w'] },
   {
     id: 'sv-s',
     symbol: 's',
-    color: '#1d4ed8',
+    color: '#f514d7',
     spellings: ['s', 'ss', 'c', 'z'],
   },
   {
     id: 'sv-sj',
     symbol: 'ɧ',
-    color: '#4338ca',
+    color: '#139a49',
     spellings: ['sj', 'sk', 'skj', 'stj', 'sch', 'sh'],
   },
   {
     id: 'sv-tj',
     symbol: 'ɕ',
-    color: '#7e22ce',
+    color: '#b81ad1',
     spellings: ['tj', 'kj', 'k', 'ch'],
   },
-  { id: 'sv-h', symbol: 'h', color: '#a21caf', spellings: ['h'] },
-  { id: 'sv-m', symbol: 'm', color: '#be123c', spellings: ['m', 'mm'] },
-  { id: 'sv-n', symbol: 'n', color: '#b45309', spellings: ['n', 'nn'] },
-  { id: 'sv-ng', symbol: 'ŋ', color: '#3f6212', spellings: ['ng', 'n'] },
-  { id: 'sv-l', symbol: 'l', color: '#15803d', spellings: ['l', 'll'] },
-  { id: 'sv-r', symbol: 'r', color: '#155e75', spellings: ['r', 'rr'] },
+  { id: 'sv-h', symbol: 'h', color: '#c47908', spellings: ['h'] },
+  { id: 'sv-m', symbol: 'm', color: '#9a6013', spellings: ['m', 'mm'] },
+  { id: 'sv-n', symbol: 'n', color: '#aa14f5', spellings: ['n', 'nn'] },
+  { id: 'sv-ng', symbol: 'ŋ', color: '#07a637', spellings: ['ng', 'n'] },
+  { id: 'sv-l', symbol: 'l', color: '#e10951', spellings: ['l', 'll'] },
+  { id: 'sv-r', symbol: 'r', color: '#146ef5', spellings: ['r', 'rr'] },
   {
     id: 'sv-j',
     symbol: 'j',
-    color: '#075985',
+    color: '#d11aac',
     spellings: ['j', 'dj', 'gj', 'hj', 'lj', 'g'],
   },
-  { id: 'sv-i-long', symbol: 'iː', color: '#1e40af', spellings: ['i'] },
-  { id: 'sv-i-short', symbol: 'ɪ', color: '#3730a3', spellings: ['i'] },
-  { id: 'sv-y-long', symbol: 'yː', color: '#5b21b6', spellings: ['y'] },
-  { id: 'sv-y-short', symbol: 'ʏ', color: '#86198f', spellings: ['y'] },
-  { id: 'sv-u-long', symbol: 'ʉː', color: '#9f1239', spellings: ['u'] },
-  { id: 'sv-u-short', symbol: 'ɵ', color: '#9a3412', spellings: ['u'] },
-  { id: 'sv-o-long', symbol: 'uː', color: '#1f5f5b', spellings: ['o'] },
-  { id: 'sv-o-short', symbol: 'ʊ', color: '#5f4b32', spellings: ['o'] },
-  { id: 'sv-e-long', symbol: 'eː', color: '#6b3f2a', spellings: ['e'] },
-  { id: 'sv-e-short', symbol: 'e', color: '#594157', spellings: ['e'] },
-  { id: 'sv-o-front-long', symbol: 'øː', color: '#385723', spellings: ['ö'] },
-  { id: 'sv-o-front-short', symbol: 'œ', color: '#4f375b', spellings: ['ö'] },
-  { id: 'sv-o-mid-long', symbol: 'oː', color: '#7a3e48', spellings: ['å'] },
-  { id: 'sv-o-mid-short', symbol: 'ɔ', color: '#3b5b7a', spellings: ['å'] },
-  { id: 'sv-e-open-long', symbol: 'ɛː', color: '#635b26', spellings: ['ä'] },
+  { id: 'sv-i-long', symbol: 'iː', color: '#f5141b', spellings: ['i'] },
+  { id: 'sv-i-short', symbol: 'ɪ', color: '#079ca6', spellings: ['i'] },
+  { id: 'sv-y-long', symbol: 'yː', color: '#d13e1a', spellings: ['y'] },
+  { id: 'sv-y-short', symbol: 'ʏ', color: '#1676b6', spellings: ['y'] },
+  { id: 'sv-u-long', symbol: 'ʉː', color: '#b66116', spellings: ['u'] },
+  { id: 'sv-u-short', symbol: 'ɵ', color: '#137b9a', spellings: ['u'] },
+  { id: 'sv-o-long', symbol: 'uː', color: '#1a9ad1', spellings: ['o'] },
+  { id: 'sv-o-short', symbol: 'ʊ', color: '#f55014', spellings: ['o'] },
+  { id: 'sv-e-long', symbol: 'eː', color: '#e614f5', spellings: ['e'] },
+  { id: 'sv-e-short', symbol: 'e', color: '#e16709', spellings: ['e'] },
+  { id: 'sv-o-front-long', symbol: 'øː', color: '#e1098b', spellings: ['ö'] },
+  { id: 'sv-o-front-short', symbol: 'œ', color: '#2585e4', spellings: ['ö'] },
+  { id: 'sv-o-mid-long', symbol: 'oː', color: '#9a9113', spellings: ['å'] },
+  { id: 'sv-o-mid-short', symbol: 'ɔ', color: '#f514b2', spellings: ['å'] },
+  { id: 'sv-e-open-long', symbol: 'ɛː', color: '#f5147d', spellings: ['ä'] },
   {
     id: 'sv-e-open-short',
     symbol: 'ɛ',
-    color: '#7a522f',
+    color: '#31a607',
     spellings: ['ä', 'e'],
   },
-  { id: 'sv-a-long', symbol: 'ɑː', color: '#365c52', spellings: ['a'] },
-  { id: 'sv-a-short', symbol: 'a', color: '#5c3c3c', spellings: ['a'] },
+  { id: 'sv-a-long', symbol: 'ɑː', color: '#317f10', spellings: ['a'] },
+  { id: 'sv-a-short', symbol: 'a', color: '#d11a69', spellings: ['a'] },
 ] as const;
 
 const legacyPhonemeIds = [
@@ -124,13 +124,17 @@ async function main() {
 
   console.log(`Seeded ${phonemes.length} phonemes.`);
 
-  const sampleTitle = 'Hej kaka';
-  const transcription = 'H=h e=ɛ j=j _ k=k a=ɑː k=k a=a';
-  const sample = await prisma.text.findFirst({ where: { title: sampleTitle } });
+  const previousSampleTitle = 'Hej kaka';
+  const sampleTitle = 'Solen skiner över sjön.';
+  const transcription =
+    'S=s o=uː l=l e=ɛ n=n _ sk=ɧ i=iː n=n e=ɛ r=r _ ö=øː v=v e=ɛ r=r _ sj=ɧ ö=øː n=n .';
+  const sample =
+    (await prisma.text.findFirst({ where: { title: previousSampleTitle } })) ??
+    (await prisma.text.findFirst({ where: { title: sampleTitle } }));
   if (sample) {
     await prisma.text.update({
       where: { id: sample.id },
-      data: { transcription },
+      data: { title: sampleTitle, transcription },
     });
   } else {
     await prisma.text.create({ data: { title: sampleTitle, transcription } });
