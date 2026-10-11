@@ -11,6 +11,29 @@ interface PhonemeRow {
 
 // Token used in a transcription to represent a literal space between words.
 const SPACE_TOKEN = '_';
+const DEFAULT_CONSONANT_COLOR = '#555555';
+const PHONEME_COLORS: Record<string, string> = {
+  ɧ: '#00a650',
+  ɕ: '#9c27b0',
+  iː: '#0057b8',
+  ɪ: '#c62828',
+  yː: '#6a1b9a',
+  ʏ: '#00838f',
+  ʉː: '#b71c1c',
+  ɵ: '#1565c0',
+  uː: '#006064',
+  ʊ: '#ef6c00',
+  eː: '#8d4e00',
+  e: '#3949ab',
+  øː: '#1a237e',
+  œ: '#9c7100',
+  oː: '#880e4f',
+  ɔ: '#0097a7',
+  ɛː: '#4e342e',
+  ɛ: '#c2185b',
+  ɑː: '#4527a0',
+  a: '#e65100',
+};
 
 @Injectable()
 export class TextService {
@@ -93,7 +116,8 @@ export class TextService {
       }
 
       const spelling = token.slice(0, separator);
-      const phoneme = phonemeBySymbol.get(token.slice(separator + 1));
+      const symbol = token.slice(separator + 1);
+      const phoneme = phonemeBySymbol.get(symbol);
       if (!phoneme) {
         return { letter: spelling, styleType: 'unstyled', color: null };
       }
@@ -101,7 +125,7 @@ export class TextService {
       return {
         letter: spelling,
         styleType: phoneme.styleType,
-        color: phoneme.color,
+        color: PHONEME_COLORS[symbol] ?? DEFAULT_CONSONANT_COLOR,
       };
     });
   }
