@@ -7,6 +7,16 @@
   white-space: pre;
 }
 
+.colorTarget {
+  border-radius: 2px;
+}
+
+.dragOver {
+  background: #eaf2ec;
+  outline: 2px dashed #3d735f;
+  outline-offset: 2px;
+}
+
 .word {
   display: inline-flex;
   height: var(--text-row-height, 2.5rem);
@@ -53,9 +63,68 @@
   display: block;
   line-height: var(--text-row-height, 2.5rem);
   grid-column: 1 / -1;
-  grid-row: 2;
+  grid-row: 3;
   min-height: 14rem;
   padding: 0;
+}
+
+.colorPalette {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.65rem 0;
+  border: 0;
+}
+
+.colorPalette legend {
+  padding: 0;
+  color: var(--ink, #17324d);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.colorSwatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.colorSwatch {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  border: 2px solid #fffefa;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #8c978c;
+  cursor: grab;
+}
+
+.colorSwatch:active {
+  cursor: grabbing;
+}
+
+.colorSwatch:focus-visible {
+  outline: 2px solid #24513f;
+  outline-offset: 4px;
+}
+
+.errorFeedback,
+.successFeedback {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  align-self: start;
+  margin: 0.25rem 0;
+  font-weight: 600;
+}
+
+.errorFeedback {
+  color: #a12e26;
+}
+
+.successFeedback {
+  color: #24513f;
 }
 
 @media (max-width: 640px) {
@@ -66,6 +135,15 @@
   }
 
   .textView {
+    grid-row: 4;
+  }
+
+  .colorPalette {
     grid-row: 3;
+  }
+
+  .errorFeedback,
+  .successFeedback {
+    grid-row: 5;
   }
 }
