@@ -85,29 +85,57 @@
   font-weight: 600;
 }
 
-.colorSwatches {
+.soundTiles {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
 }
 
-.colorSwatch {
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: 0 0 2.75rem;
-  border: 2px solid #fffefa;
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px #8c978c;
+.soundTile {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 4rem;
+  grid-template-rows: 2.5rem 1rem;
+  align-content: center;
+  justify-items: center;
+  gap: 0.1rem;
+  padding: 0.2rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink, #17324d);
   cursor: grab;
 }
 
-.colorSwatch:active {
+.soundTile:hover {
+  border-color: #b8c9b5;
+  background: #f1f5ed;
+}
+
+.soundTile:active {
   cursor: grabbing;
 }
 
-.colorSwatch:focus-visible {
+.soundTile:focus-visible {
   outline: 2px solid #24513f;
   outline-offset: 4px;
+}
+
+.soundIcon {
+  align-self: end;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.soundWord {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .errorFeedback,
@@ -127,6 +155,47 @@
   color: #24513f;
 }
 
+.celebrationFeedback {
+  display: flex;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  align-items: center;
+  align-self: start;
+  gap: 0.65rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.25rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 4px solid #3d735f;
+  background: #e6f3e7;
+  color: #24513f;
+  font-weight: 700;
+  animation: celebration-arrive 420ms ease-out both;
+}
+
+.celebrationIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+@keyframes celebration-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .celebrationFeedback {
+    animation: none;
+  }
+}
+
 @media (max-width: 640px) {
   .textSelector {
     grid-column: 1;
@@ -143,7 +212,8 @@
   }
 
   .errorFeedback,
-  .successFeedback {
+  .successFeedback,
+  .celebrationFeedback {
     grid-row: 5;
   }
 }

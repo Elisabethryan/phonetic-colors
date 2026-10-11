@@ -24,18 +24,98 @@ function groupLettersByWord(letters: FormattedLetter[]) {
   return words;
 }
 
-function getAvailableColors(letters: FormattedLetter[]) {
-  const colors = new Map<string, string>();
+type SoundExample = {
+  id: string;
+  spellings: string[];
+  word: string;
+  icon: string;
+};
+
+const soundExamples: SoundExample[] = [
+  {
+    id: "sj",
+    spellings: ["sj", "sh", "sch", "sk", "skj", "stj"],
+    word: "sjö",
+    icon: "🌊",
+  },
+  { id: "tj", spellings: ["kj", "tj", "ch"], word: "tjej", icon: "👧" },
+  {
+    id: "j",
+    spellings: ["dj", "gj", "hj", "lj", "j"],
+    word: "jordgubbe",
+    icon: "🍓",
+  },
+  { id: "k", spellings: ["ck", "k", "kk", "q"], word: "katt", icon: "🐈" },
+  { id: "s", spellings: ["s", "ss", "z", "c"], word: "sol", icon: "☀️" },
+  { id: "a", spellings: ["a"], word: "apa", icon: "🐒" },
+  { id: "å", spellings: ["å"], word: "åska", icon: "🌩️" },
+  { id: "ä", spellings: ["ä"], word: "äpple", icon: "🍎" },
+  { id: "b", spellings: ["b", "bb"], word: "boll", icon: "🏀" },
+  { id: "d", spellings: ["d", "dd"], word: "drake", icon: "🪁" },
+  { id: "e", spellings: ["e"], word: "ekorre", icon: "🐿️" },
+  { id: "f", spellings: ["f", "ff"], word: "fisk", icon: "🐟" },
+  { id: "g", spellings: ["g", "gg"], word: "glass", icon: "🍦" },
+  { id: "h", spellings: ["h"], word: "hus", icon: "🏠" },
+  { id: "i", spellings: ["i"], word: "is", icon: "🧊" },
+  { id: "l", spellings: ["l", "ll"], word: "lampa", icon: "💡" },
+  { id: "m", spellings: ["m", "mm"], word: "måne", icon: "🌙" },
+  { id: "n", spellings: ["n", "ng", "nn"], word: "nyckel", icon: "🔑" },
+  { id: "o", spellings: ["o"], word: "orm", icon: "🐍" },
+  { id: "ö", spellings: ["ö"], word: "öga", icon: "👁️" },
+  { id: "p", spellings: ["p", "pp"], word: "penna", icon: "✏️" },
+  { id: "r", spellings: ["r", "rr"], word: "raket", icon: "🚀" },
+  { id: "t", spellings: ["t", "tt"], word: "tåg", icon: "🚂" },
+  { id: "u", spellings: ["u"], word: "uggla", icon: "🦉" },
+  { id: "v", spellings: ["v", "w"], word: "val", icon: "🐋" },
+  { id: "y", spellings: ["y"], word: "yxa", icon: "🪓" },
+];
+
+function getAvailableSoundOptions(letters: FormattedLetter[]) {
+  const colors = new Map<string, { color: string; spellings: Set<string> }>();
 
   for (const letter of letters) {
     if (!isColorTarget(letter) || !letter.color?.trim()) continue;
-    const key = letter.color.trim().toLowerCase();
-    if (!colors.has(key)) colors.set(key, letter.color.trim());
+    const colorKey = letter.color.trim().toLowerCase();
+    const option = colors.get(colorKey) ?? {
+      color: letter.color.trim(),
+      spellings: new Set<string>(),
+    };
+    option.spellings.add(letter.letter.toLocaleLowerCase("sv-SE"));
+    colors.set(colorKey, option);
   }
 
-  return [...colors.values()].sort((first, second) =>
-    first.localeCompare(second),
-  );
+  const soundOptions = new Map<
+    string,
+    { example: SoundExample; colors: Set<string>; spellings: Set<string> }
+  >();
+
+  for (const colorOption of colors.values()) {
+    const example = soundExamples.find((candidate) =>
+      candidate.spellings.some((spelling) =>
+        colorOption.spellings.has(spelling),
+      ),
+    );
+    if (!example) continue;
+
+    const soundOption = soundOptions.get(example.id) ?? {
+      example,
+      colors: new Set<string>(),
+      spellings: new Set<string>(),
+    };
+    soundOption.colors.add(colorOption.color.toLowerCase());
+    colorOption.spellings.forEach((spelling) =>
+      soundOption.spellings.add(spelling),
+    );
+    soundOptions.set(example.id, soundOption);
+  }
+
+  return [...soundOptions.values()]
+    .map(({ example, colors: soundColors, spellings }) => ({
+      ...example,
+      colors: [...soundColors],
+      spellings: [...spellings].sort(),
+    }))
+    .sort((first, second) => first.word.localeCompare(second.word));
 }
 
 function isColorTarget(letter: FormattedLetter) {
@@ -123,8 +203,21 @@ function TextView() {
   }, [textId]);
 
   const words = groupLettersByWord(text ?? []);
-  const colors = getAvailableColors([...(text ?? []), ...alphabet]);
+  const soundOptions = getAvailableSoundOptions([...alphabet, ...(text ?? [])]);
+  const soundByColor = new Map(
+    soundOptions.flatMap((option) =>
+      option.colors.map((color) => [color, option.id] as const),
+    ),
+  );
   const hasColorTargets = (text ?? []).some(isColorTarget);
+  const targetPositions = words.flatMap((word, wordIndex) =>
+    word.flatMap((letter, letterIndex) =>
+      isColorTarget(letter) ? [`${wordIndex}-${letterIndex}`] : [],
+    ),
+  );
+  const sentenceIsComplete =
+    targetPositions.length > 0 &&
+    targetPositions.every((position) => Boolean(revealedColors[position]));
 
   return (
     <div className={styles.textPanel}>
@@ -154,27 +247,38 @@ function TextView() {
         <>
           {hasColorTargets && (
             <fieldset className={styles.colorPalette}>
-              <legend>Drag a color onto a faded letter</legend>
-              <div className={styles.colorSwatches}>
-                {colors.map((color) => (
+              <legend>Drag a word icon onto a faded letter</legend>
+              <div className={styles.soundTiles}>
+                {soundOptions.map((option) => (
                   <button
-                    key={color}
+                    key={option.id}
                     type="button"
-                    className={styles.colorSwatch}
-                    style={{ backgroundColor: color }}
+                    className={styles.soundTile}
                     draggable
-                    aria-label={`Drag color ${color}`}
-                    title={color}
+                    aria-label={`Drag ${option.word}, which starts with the ${[...option.spellings].join("/")} sound`}
+                    title={`${option.word} (${option.spellings.join("/")})`}
                     onDragStart={(event) => {
-                      event.dataTransfer.setData("text/plain", color);
+                      event.dataTransfer.setData("text/plain", option.id);
                       event.dataTransfer.effectAllowed = "copy";
                     }}
-                  />
+                  >
+                    <span className={styles.soundIcon} aria-hidden="true">
+                      {option.icon}
+                    </span>
+                    <span className={styles.soundWord}>{option.word}</span>
+                  </button>
                 ))}
               </div>
             </fieldset>
           )}
-          {feedback && (
+          {sentenceIsComplete ? (
+            <p className={styles.celebrationFeedback} role="status">
+              <span className={styles.celebrationIcon} aria-hidden="true">
+                🎉
+              </span>
+              <span>Sentence complete!</span>
+            </p>
+          ) : feedback ? (
             <p
               className={
                 feedback.isError ? styles.errorFeedback : styles.successFeedback
@@ -183,7 +287,7 @@ function TextView() {
             >
               {feedback.message}
             </p>
-          )}
+          ) : null}
           <div className={styles.textView}>
             {words.map((word, wordIndex) => (
               <Fragment key={wordIndex}>
@@ -198,24 +302,26 @@ function TextView() {
                         key={letterIndex}
                         letter={letter}
                         displayColor={revealedColors[position]}
-                        isColorTarget={colorTarget}
-                        onColorDrop={(color) => {
-                          if (!letter.color) return;
-                          if (
-                            color.toLowerCase() === letter.color.toLowerCase()
-                          ) {
+                        isColorTarget={colorTarget && !revealedColors[position]}
+                        onColorDrop={(soundId) => {
+                          const color = letter.color;
+                          if (!color) return;
+                          const expectedSound = soundByColor.get(
+                            color.trim().toLowerCase(),
+                          );
+                          if (soundId === expectedSound) {
                             setRevealedColors((revealed) => ({
                               ...revealed,
-                              [position]: letter.color as string,
+                              [position]: color,
                             }));
                             setFeedback({
-                              message: "Correct color.",
+                              message: "Correct sound.",
                               isError: false,
                             });
                           } else {
                             setFeedback({
                               message:
-                                "That color does not match. Try another.",
+                                "That sound does not match. Try another.",
                               isError: true,
                             });
                           }
