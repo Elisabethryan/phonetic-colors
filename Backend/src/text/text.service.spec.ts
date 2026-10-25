@@ -45,14 +45,14 @@ describe('TextService', () => {
     const text = await textService.getText('1');
 
     expect(text?.text).toEqual([
-      { letter: 'sj', styleType: 'colored', color: '#00a650' },
-      { letter: 'sk', styleType: 'colored', color: '#00a650' },
-      { letter: 'a', styleType: 'colored', color: '#e65100' },
-      { letter: 'a', styleType: 'colored', color: '#4527a0' },
-      { letter: 'g', styleType: 'colored', color: '#555555' },
-      { letter: 'k', styleType: 'colored', color: '#555555' },
-      { letter: 'ä', styleType: 'colored', color: '#4e342e' },
-      { letter: 'l', styleType: 'colored', color: '#555555' },
+      { letter: 'sj', sound: 'ɧ', styleType: 'colored', color: '#00a650' },
+      { letter: 'sk', sound: 'ɧ', styleType: 'colored', color: '#00a650' },
+      { letter: 'a', sound: 'a', styleType: 'colored', color: '#e65100' },
+      { letter: 'a', sound: 'ɑː', styleType: 'colored', color: '#4527a0' },
+      { letter: 'g', sound: 'ɡ', styleType: 'colored', color: '#555555' },
+      { letter: 'k', sound: 'k', styleType: 'colored', color: '#555555' },
+      { letter: 'ä', sound: 'ɛː', styleType: 'colored', color: '#4e342e' },
+      { letter: 'l', sound: 'l', styleType: 'colored', color: '#555555' },
       { letter: ' ', styleType: 'unstyled', color: null },
       { letter: '!', styleType: 'unstyled', color: null },
       { letter: 'plain', styleType: 'unstyled', color: null },

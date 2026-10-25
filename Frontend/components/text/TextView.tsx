@@ -26,93 +26,67 @@ function groupLettersByWord(letters: FormattedLetter[]) {
 
 type SoundExample = {
   id: string;
-  spellings: string[];
+  symbols: string[];
   word: string;
   icon: string;
 };
 
 const soundExamples: SoundExample[] = [
-  {
-    id: "sj",
-    spellings: ["sj", "sh", "sch", "sk", "skj", "stj"],
-    word: "sjö",
-    icon: "🌊",
-  },
-  { id: "tj", spellings: ["kj", "tj", "ch"], word: "tjej", icon: "👧" },
-  {
-    id: "j",
-    spellings: ["dj", "gj", "hj", "lj", "j"],
-    word: "jordgubbe",
-    icon: "🍓",
-  },
-  { id: "k", spellings: ["ck", "k", "kk", "q"], word: "katt", icon: "🐈" },
-  { id: "s", spellings: ["s", "ss", "z", "c"], word: "sol", icon: "☀️" },
-  { id: "a", spellings: ["a"], word: "apa", icon: "🐒" },
-  { id: "å", spellings: ["å"], word: "åska", icon: "🌩️" },
-  { id: "ä", spellings: ["ä"], word: "äpple", icon: "🍎" },
-  { id: "b", spellings: ["b", "bb"], word: "boll", icon: "🏀" },
-  { id: "d", spellings: ["d", "dd"], word: "drake", icon: "🪁" },
-  { id: "e", spellings: ["e"], word: "ekorre", icon: "🐿️" },
-  { id: "f", spellings: ["f", "ff"], word: "fisk", icon: "🐟" },
-  { id: "g", spellings: ["g", "gg"], word: "glass", icon: "🍦" },
-  { id: "h", spellings: ["h"], word: "hus", icon: "🏠" },
-  { id: "i", spellings: ["i"], word: "is", icon: "🧊" },
-  { id: "l", spellings: ["l", "ll"], word: "lampa", icon: "💡" },
-  { id: "m", spellings: ["m", "mm"], word: "måne", icon: "🌙" },
-  { id: "n", spellings: ["n", "ng", "nn"], word: "nyckel", icon: "🔑" },
-  { id: "o", spellings: ["o"], word: "orm", icon: "🐍" },
-  { id: "ö", spellings: ["ö"], word: "öga", icon: "👁️" },
-  { id: "p", spellings: ["p", "pp"], word: "penna", icon: "✏️" },
-  { id: "r", spellings: ["r", "rr"], word: "raket", icon: "🚀" },
-  { id: "t", spellings: ["t", "tt"], word: "tåg", icon: "🚂" },
-  { id: "u", spellings: ["u"], word: "uggla", icon: "🦉" },
-  { id: "v", spellings: ["v", "w"], word: "val", icon: "🐋" },
-  { id: "y", spellings: ["y"], word: "yxa", icon: "🪓" },
+  { id: "sj", symbols: ["ɧ"], word: "sjö", icon: "🌊" },
+  { id: "tj", symbols: ["ɕ"], word: "tjej", icon: "👧" },
+  { id: "j", symbols: ["j"], word: "jordgubbe", icon: "🍓" },
+  { id: "k", symbols: ["k"], word: "katt", icon: "🐈" },
+  { id: "s", symbols: ["s"], word: "sol", icon: "☀️" },
+  { id: "a-long", symbols: ["ɑː"], word: "apa", icon: "🐒" },
+  { id: "a-short", symbols: ["a"], word: "anka", icon: "🦆" },
+  { id: "å", symbols: ["oː", "ɔ"], word: "åska", icon: "🌩️" },
+  { id: "b", symbols: ["b"], word: "boll", icon: "🏀" },
+  { id: "d", symbols: ["d"], word: "drake", icon: "🪁" },
+  { id: "e", symbols: ["eː", "e", "ɛː", "ɛ"], word: "ekorre", icon: "🐿️" },
+  { id: "f", symbols: ["f"], word: "fisk", icon: "🐟" },
+  { id: "g", symbols: ["ɡ"], word: "glass", icon: "🍦" },
+  { id: "h", symbols: ["h"], word: "hus", icon: "🏠" },
+  { id: "i", symbols: ["iː", "ɪ"], word: "is", icon: "🧊" },
+  { id: "l", symbols: ["l"], word: "lampa", icon: "💡" },
+  { id: "m", symbols: ["m"], word: "måne", icon: "🌙" },
+  { id: "n", symbols: ["n", "ŋ"], word: "nyckel", icon: "🔑" },
+  { id: "o", symbols: ["uː", "ʊ"], word: "orm", icon: "🐍" },
+  { id: "ö", symbols: ["øː", "œ"], word: "öga", icon: "👁️" },
+  { id: "p", symbols: ["p"], word: "penna", icon: "✏️" },
+  { id: "r", symbols: ["r"], word: "raket", icon: "🚀" },
+  { id: "t", symbols: ["t"], word: "tåg", icon: "🚂" },
+  { id: "u", symbols: ["ʉː", "ɵ"], word: "uggla", icon: "🦉" },
+  { id: "v", symbols: ["v"], word: "val", icon: "🐋" },
+  { id: "y", symbols: ["yː", "ʏ"], word: "yxa", icon: "🪓" },
 ];
 
+function getSoundExample(sound: string | null | undefined) {
+  return soundExamples.find((example) => example.symbols.includes(sound ?? ""));
+}
+
 function getAvailableSoundOptions(letters: FormattedLetter[]) {
-  const colors = new Map<string, { color: string; spellings: Set<string> }>();
-
-  for (const letter of letters) {
-    if (!isColorTarget(letter) || !letter.color?.trim()) continue;
-    const colorKey = letter.color.trim().toLowerCase();
-    const option = colors.get(colorKey) ?? {
-      color: letter.color.trim(),
-      spellings: new Set<string>(),
-    };
-    option.spellings.add(letter.letter.toLocaleLowerCase("sv-SE"));
-    colors.set(colorKey, option);
-  }
-
   const soundOptions = new Map<
     string,
-    { example: SoundExample; colors: Set<string>; spellings: Set<string> }
+    { example: SoundExample; spellings: Set<string> }
   >();
 
-  for (const colorOption of colors.values()) {
-    const example = soundExamples.find((candidate) =>
-      candidate.spellings.some((spelling) =>
-        colorOption.spellings.has(spelling),
-      ),
-    );
+  for (const letter of letters) {
+    if (!isColorTarget(letter)) continue;
+    const spelling = letter.letter.toLocaleLowerCase("sv-SE");
+    const example = getSoundExample(letter.sound);
     if (!example) continue;
 
     const soundOption = soundOptions.get(example.id) ?? {
       example,
-      colors: new Set<string>(),
       spellings: new Set<string>(),
     };
-    soundOption.colors.add(colorOption.color.toLowerCase());
-    colorOption.spellings.forEach((spelling) =>
-      soundOption.spellings.add(spelling),
-    );
+    soundOption.spellings.add(spelling);
     soundOptions.set(example.id, soundOption);
   }
 
   return [...soundOptions.values()]
-    .map(({ example, colors: soundColors, spellings }) => ({
+    .map(({ example, spellings }) => ({
       ...example,
-      colors: [...soundColors],
       spellings: [...spellings].sort(),
     }))
     .sort((first, second) => first.word.localeCompare(second.word));
@@ -204,11 +178,6 @@ function TextView() {
 
   const words = groupLettersByWord(text ?? []);
   const soundOptions = getAvailableSoundOptions([...alphabet, ...(text ?? [])]);
-  const soundByColor = new Map(
-    soundOptions.flatMap((option) =>
-      option.colors.map((color) => [color, option.id] as const),
-    ),
-  );
   const hasColorTargets = (text ?? []).some(isColorTarget);
   const targetPositions = words.flatMap((word, wordIndex) =>
     word.flatMap((letter, letterIndex) =>
@@ -306,9 +275,7 @@ function TextView() {
                         onColorDrop={(soundId) => {
                           const color = letter.color;
                           if (!color) return;
-                          const expectedSound = soundByColor.get(
-                            color.trim().toLowerCase(),
-                          );
+                          const expectedSound = getSoundExample(letter.sound)?.id;
                           if (soundId === expectedSound) {
                             setRevealedColors((revealed) => ({
                               ...revealed,

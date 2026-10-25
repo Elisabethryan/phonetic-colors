@@ -16,7 +16,9 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Backend is healthy"', () => {
-      expect(appController.getHealth()).toBe('Backend is healthy');
+      expect(appController.getHealth()).toEqual({
+        message: 'Backend is healthy',
+      });
     });
   });
 });
