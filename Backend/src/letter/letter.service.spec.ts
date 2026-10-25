@@ -27,7 +27,7 @@ describe('LetterService', () => {
 
     await expect(service.findAll()).resolves.toEqual(letters);
     expect(databaseService.query).toHaveBeenCalledWith(
-      'SELECT ps.id, ps.spelling AS letter, p."styleType", p.color ' +
+      'SELECT ps.id, ps.spelling AS letter, p.symbol AS sound, p."styleType", p.color ' +
         'FROM "PhonemeSpelling" ps ' +
         'JOIN "Phoneme" p ON p.id = ps."phonemeId" ' +
         'ORDER BY ps.spelling ASC, ps.id ASC',

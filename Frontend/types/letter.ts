@@ -3,6 +3,7 @@ import { LatinLetter } from "./latinLetter";
 export interface FormattedLetter {
   id: string;
   letter: LatinLetter;
+  sound?: string | null;
   //style?: Style; Todo add this cooler type
   styleType: "unstyled" | "underlined" | "colored";
   color: string | null;

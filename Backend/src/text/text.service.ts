@@ -124,6 +124,7 @@ export class TextService {
 
       return {
         letter: spelling,
+        sound: symbol,
         styleType: phoneme.styleType,
         color: PHONEME_COLORS[symbol] ?? DEFAULT_CONSONANT_COLOR,
       };

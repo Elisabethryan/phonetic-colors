@@ -13,7 +13,7 @@ export class LetterService {
 
   findAll() {
     return this.databaseService.query(
-      'SELECT ps.id, ps.spelling AS letter, p."styleType", p.color ' +
+      'SELECT ps.id, ps.spelling AS letter, p.symbol AS sound, p."styleType", p.color ' +
         'FROM "PhonemeSpelling" ps ' +
         'JOIN "Phoneme" p ON p.id = ps."phonemeId" ' +
         'ORDER BY ps.spelling ASC, ps.id ASC',
